@@ -94,6 +94,7 @@ def priceDataPoint(request):
         obj['price'] = price
         obj['url'] = url
         obj['alltimelow'] = price
+        products[product_id] = obj
         notifications(product_id, ['ALWAYS'])
     else:
         events = list()
@@ -106,9 +107,14 @@ def priceDataPoint(request):
         if price < product['price']:
             events.append(settings.ALWAYS)
 
-        notifications(product_id, events)
+        if events:
+            product['price'] = price
+            if settings.ALL_TIME_LOW in events:
+                product['alltimelow'] = price
+            products[product_id] = product
+            notifications(product_id, events)
     response = {
-        'success': False
+        'success': True
     }
     return Response(json=response)
 
