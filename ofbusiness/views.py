@@ -107,12 +107,12 @@ def priceDataPoint(request):
         if price < product['price']:
             events.append(settings.ALWAYS)
 
+        product['price'] = price
         if events:
-            product['price'] = price
             if settings.ALL_TIME_LOW in events:
                 product['alltimelow'] = price
-            products[product_id] = product
             notifications(product_id, events)
+        products[product_id] = product
     response = {
         'success': True
     }
