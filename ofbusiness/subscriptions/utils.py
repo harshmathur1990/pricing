@@ -7,7 +7,6 @@ from ofbusiness.products.models import products
 def notifications(product_id, typeList):
     if not typeList:
         return
-    import pdb;pdb.set_trace()
     key = settings.PRODUCT_SUBSCRIBER_CACHE_KEY + product_id
     user_list = cache.get(key, list())
     product = products.get(product_id)
